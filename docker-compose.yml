@@ -1,0 +1,10 @@
+version: '1'
+services:
+    playwright:
+        build:
+            context: .
+        image: local-image
+        command: "npx playwright test"
+        working_dir: /app
+        volumes:
+            - "./:/app"
