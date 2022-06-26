@@ -11,7 +11,7 @@ In the project directory, you can run:
 
 #### `yarn`
 
-Installs a package and any packages that it depends. on
+Installs a package and any packages that it depends on.
 
 #### `yarn run test`
 
@@ -35,4 +35,10 @@ Add the two missing steps to the test. In the first step click on the button "Si
 
 Use a docker to containerize project. Use the official Playwright Docker image or build a custom image. Include information how to run test from the docker side in the readme.
 
-Good luck!
+## Docker
+* Make sure you have [docker](https://www.docker.com/) installed.
+* To run tests in the docker container, make sure docker is up and running and then run the command:
+
+```
+docker compose up
+```
