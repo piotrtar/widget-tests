@@ -48,12 +48,32 @@ test.describe("Widget tests", () => {
     await test.step(
       "Simulate visitor and send message from widget to panel",
       async () => {
+        const visitorMessage = "Hello!";
         await page.locator("[href='/panel/conversations']").click();
-        //TODO
+        const [popup] = await Promise.all([
+          page.waitForEvent('popup'),
+          await page.locator('text="Simulate a conversation"').click()
+        ]);
+        await popup.waitForLoadState();
+        const iframe = popup.frameLocator('id=tidio-chat-iframe');
+        await iframe.locator('.message-container').hover();
+        await iframe.locator('id=ic_close').click();
+        await iframe.locator('text="Chat with us"').click();
+        await iframe.locator('[placeholder="Hit the buttons to respond"]').fill(visitorMessage);
+        await popup.keyboard.press('Enter');
+        await iframe.locator('[placeholder="Enter your email..."]').fill(getNewEmail());
+        await iframe.locator('text="Send"').click();
+        await expect(page.locator("//*[text()='Unassigned']/..//p", { hasText: visitorMessage })).toBeVisible();
       }
     );
     await test.step("Send a reply message from the panel", async () => {
-      //TODO
+      const operatorReplyMessage = "Hello, how can I help you?";
+      await page.locator('text="Hello!"').click();
+      await page.keyboard.press('Enter');
+      await page.locator('text="Got it!"').click();
+      await page.locator('[placeholder="Write your message or type / to pick a Quick Response"]').fill(operatorReplyMessage);
+      await page.locator('text="Reply"').click();
+      await expect(page.locator("//*[text()='You']/../../..//span", { hasText: operatorReplyMessage })).toBeVisible();
     });
   });
 });
