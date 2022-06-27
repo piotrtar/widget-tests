@@ -1,10 +1,10 @@
-version: '1'
+version: '3'
 services:
     playwright:
-        build:
-            context: .
-        image: local-image
-        command: "npx playwright test"
-        working_dir: /app
+        image: mcr.microsoft.com/playwright:v1.22.2-focal
+        command: >
+            bash -c "npm install &&
+            yarn run test"
+        working_dir: /e2e
         volumes:
-            - "./:/app"
+            - ./:/e2e/
